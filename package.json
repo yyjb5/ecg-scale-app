@@ -77,7 +77,8 @@
     "lint": "eslint --ext .ts,.tsx src",
     "compile": "graphql-codegen",
     "watch": "graphql-codegen -w",
-    "dev": "ionic capacitor run android -l --external"
+    "dev": "ionic capacitor run android -l --external",
+    "ionic:build": "react-scripts build && ionic cap copy && ionic cap sync"
   },
   "browserslist": [
     "Chrome >=79",
