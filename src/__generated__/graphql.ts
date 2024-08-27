@@ -94,6 +94,12 @@ export type AllFactorInfo = {
   scaleFactor: FactorInfo;
 };
 
+export type AllPackageInfo = {
+  __typename?: 'AllPackageInfo';
+  questionList: Array<ScaleList>;
+  scaleFactor?: Maybe<PackageInfo>;
+};
+
 export type Answer = {
   __typename?: 'Answer';
   answerGroupCode?: Maybe<Scalars['String']['output']>;
@@ -134,6 +140,7 @@ export type AnswerInput = {
 export type AnswerQueryInput = {
   answerGroupCode?: InputMaybe<Scalars['String']['input']>;
   answerName?: InputMaybe<Scalars['String']['input']>;
+  scaleName?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type AnswerResult = {
@@ -293,13 +300,6 @@ export type CreatAccessoryResponse = {
   success?: Maybe<Scalars['Boolean']['output']>;
 };
 
-export type CreatResponse = {
-  __typename?: 'CreatResponse';
-  message?: Maybe<Scalars['String']['output']>;
-  new?: Maybe<TSubsidiaryDepartment>;
-  success?: Maybe<Scalars['Boolean']['output']>;
-};
-
 export type CreateAnswerInput = {
   answerGroupCode?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
@@ -330,15 +330,20 @@ export type CreateConsulationRecordInput = {
 };
 
 export type CreateDeInput = {
+  checkedScaleId?: InputMaybe<Array<Scalars['Int']['input']>>;
   departmentId?: InputMaybe<Array<Scalars['Int']['input']>>;
   effectiveEndTime: Scalars['DateTime']['input'];
   effectiveStartTime: Scalars['DateTime']['input'];
   isEnable: Scalars['Boolean']['input'];
+  isGenerateQRCode?: InputMaybe<Scalars['Boolean']['input']>;
+  isShowReport?: InputMaybe<Scalars['Boolean']['input']>;
+  packageId?: InputMaybe<Array<Scalars['Int']['input']>>;
   releaseTopic: Scalars['String']['input'];
   releaseType: Scalars['Int']['input'];
   remark?: InputMaybe<Scalars['String']['input']>;
   scaleId?: InputMaybe<Array<Scalars['Int']['input']>>;
   subDepartmentId?: InputMaybe<Array<Scalars['Int']['input']>>;
+  unit?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateDiagnosticInput = {
@@ -351,11 +356,30 @@ export type CreateDiagnosticInput = {
   severity?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type CreateEditScaleBaseResponse = {
+  __typename?: 'CreateEditScaleBaseResponse';
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type CreateEditScaleFactorResponse = {
+  __typename?: 'CreateEditScaleFactorResponse';
+  message?: Maybe<Scalars['String']['output']>;
+  success?: Maybe<Scalars['Boolean']['output']>;
+};
+
+export type CreateEditScaleTypeResponse = {
+  __typename?: 'CreateEditScaleTypeResponse';
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
 export type CreateHrvEvaluationInput = {
   effectiveEndTime: Scalars['DateTime']['input'];
   effectiveStartTime: Scalars['DateTime']['input'];
   id: Scalars['Int']['input'];
   isEnable: Scalars['Int']['input'];
+  releaseNumber: Scalars['Int']['input'];
   releaseTopic: Scalars['String']['input'];
   userList: Array<Scalars['Int']['input']>;
 };
@@ -371,11 +395,24 @@ export type CreateIndividualEvaluationInput = {
   effectiveStartTime: Scalars['DateTime']['input'];
   id: Scalars['Int']['input'];
   isEnable: Scalars['Int']['input'];
+  isShowReport?: InputMaybe<Scalars['Boolean']['input']>;
+  packageList: Array<Scalars['Int']['input']>;
   releaseTopic: Scalars['String']['input'];
   releaseType: Scalars['Int']['input'];
   remark?: InputMaybe<Scalars['String']['input']>;
   scaleList: Array<Scalars['Int']['input']>;
   userList: Array<Scalars['Int']['input']>;
+};
+
+export type CreateReportSettingInput = {
+  imgURL?: InputMaybe<Scalars['String']['input']>;
+  isBed: Scalars['Boolean']['input'];
+  isCountTime: Scalars['Boolean']['input'];
+  isDepartment: Scalars['Boolean']['input'];
+  isEnable: Scalars['Boolean']['input'];
+  isInstitution: Scalars['Boolean']['input'];
+  isLogo: Scalars['Boolean']['input'];
+  remark?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateResponse = {
@@ -393,14 +430,6 @@ export type CreateScaleQuestionResponse = {
   __typename?: 'CreateScaleQuestionResponse';
   message: Scalars['String']['output'];
   success: Scalars['Boolean']['output'];
-};
-
-export type CreateSubsidiaryDepartmentInput = {
-  departmentId?: InputMaybe<Scalars['Int']['input']>;
-  institutionCode: Scalars['String']['input'];
-  isEnable: Scalars['Boolean']['input'];
-  name: Scalars['String']['input'];
-  remark?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type CreateUpbringingHistoryInput = {
@@ -444,9 +473,45 @@ export type Department = {
   id: Scalars['ID']['output'];
   institutionCode: Scalars['String']['output'];
   isEnable?: Maybe<Scalars['Boolean']['output']>;
+  level?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  parentId?: Maybe<Scalars['Int']['output']>;
+  remark?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  uuid: Scalars['String']['output'];
+};
+
+export type DepartmentAll = {
+  __typename?: 'DepartmentALL';
+  children: Array<DepartmentAll>;
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  institutionCode: Scalars['String']['output'];
+  isEnable?: Maybe<Scalars['Boolean']['output']>;
+  level?: Maybe<Scalars['Int']['output']>;
+  name: Scalars['String']['output'];
+  parentId?: Maybe<Scalars['Int']['output']>;
+  remark?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  uuid: Scalars['String']['output'];
+};
+
+export type DepartmentDepartmentTree = {
+  __typename?: 'DepartmentDepartmentTree';
+  children?: Maybe<Array<DepartmentDepartmentTree>>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type DepartmentEntity = {
+  __typename?: 'DepartmentEntity';
+  children: Array<DepartmentAll>;
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  institutionCode: Scalars['String']['output'];
+  isEnable: Scalars['Boolean']['output'];
   name: Scalars['String']['output'];
   remark?: Maybe<Scalars['String']['output']>;
-  subDepartmentNames?: Maybe<Array<Scalars['String']['output']>>;
   updatedAt: Scalars['DateTime']['output'];
   uuid: Scalars['String']['output'];
 };
@@ -465,32 +530,72 @@ export type DepartmentEvaluation = {
   uuid: Scalars['String']['output'];
 };
 
+export type DepartmentEvaluationEntity = {
+  __typename?: 'DepartmentEvaluationEntity';
+  createdAt: Scalars['DateTime']['output'];
+  departments: Array<DepartmentEntity>;
+  effectiveEndTime: Scalars['DateTime']['output'];
+  effectiveStartTime: Scalars['DateTime']['output'];
+  isEnable: Scalars['Boolean']['output'];
+  releaseTopic: Scalars['String']['output'];
+  releaseType: Scalars['Int']['output'];
+  remark?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  uuid: Scalars['String']['output'];
+};
+
 export type DepartmentEvaluationWithId = {
   __typename?: 'DepartmentEvaluationWithId';
   createdAt: Scalars['DateTime']['output'];
   departmentId?: Maybe<Array<Scalars['Int']['output']>>;
   effectiveEndTime: Scalars['DateTime']['output'];
   effectiveStartTime: Scalars['DateTime']['output'];
+  evaluationTotal: Scalars['Int']['output'];
+  finishUserCount: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
   isEnable: Scalars['Boolean']['output'];
+  isGenerateQRCode: Scalars['Boolean']['output'];
+  isShowReport: Scalars['Boolean']['output'];
+  packageId?: Maybe<Array<Scalars['Int']['output']>>;
   releaseTopic: Scalars['String']['output'];
   releaseType: Scalars['Int']['output'];
   remark?: Maybe<Scalars['String']['output']>;
   scaleId?: Maybe<Array<Scalars['Int']['output']>>;
-  subDepartmentId?: Maybe<Array<Scalars['Int']['output']>>;
+  unFinishUserCount: Scalars['Int']['output'];
+  unFinishUserIdList?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  unFinishUserNameList: Array<Scalars['String']['output']>;
+  unFinishUserPhoneList?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  unFinishUserScaleList: Array<Array<Scale>>;
+  unit?: Maybe<Scalars['String']['output']>;
   updatedAt: Scalars['DateTime']['output'];
   uuid: Scalars['String']['output'];
 };
 
-export type DepartmentWithSub = {
-  __typename?: 'DepartmentWithSub';
-  createdAt: Scalars['DateTime']['output'];
-  id: Scalars['ID']['output'];
-  institutionCode: Scalars['String']['output'];
-  name: Scalars['String']['output'];
-  subsidiaryDepartment: Array<Subdepartment>;
-  updatedAt: Scalars['DateTime']['output'];
+export type DepartmentExportRecordItemDto = {
+  __typename?: 'DepartmentExportRecordItemDto';
+  condition: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  time: Scalars['DateTime']['output'];
+};
+
+export type DepartmentResponseDto = {
+  __typename?: 'DepartmentResponseDto';
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
+export type DepartmentTopicListItem = {
+  __typename?: 'DepartmentTopicListItem';
+  topicName: Scalars['String']['output'];
+  topicType: Scalars['String']['output'];
   uuid: Scalars['String']['output'];
+};
+
+export type DepartmentTree = {
+  __typename?: 'DepartmentTree';
+  children?: Maybe<Array<DepartmentTree>>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type DepartmentfCreateInput = {
@@ -555,6 +660,14 @@ export type Ethnicity = {
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']['output'];
   uuid: Scalars['String']['output'];
+};
+
+export type ExportRecordItemDto = {
+  __typename?: 'ExportRecordItemDto';
+  condition: Scalars['String']['output'];
+  content: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  time: Scalars['DateTime']['output'];
 };
 
 export type FactorInfo = {
@@ -657,6 +770,12 @@ export type GetAllIndividualEvaluation = {
   updatedAt: Scalars['DateTime']['output'];
 };
 
+export type GetAllReportSettings = {
+  __typename?: 'GetAllReportSettings';
+  data: Array<ReportSettings>;
+  totalCount?: Maybe<Scalars['Int']['output']>;
+};
+
 export type GetAllScaleDiagnostic = {
   __typename?: 'GetAllScaleDiagnostic';
   /** Identifies the date and time when the object was created. */
@@ -728,7 +847,6 @@ export type GetArchivesListResult = {
   identificationCard?: Maybe<Scalars['String']['output']>;
   realname: Scalars['String']['output'];
   reportInfo: Array<ReportInfoResult>;
-  subDepartment?: Maybe<SubsidiaryDepartment>;
   username: Scalars['String']['output'];
   uuid: Scalars['String']['output'];
 };
@@ -776,6 +894,11 @@ export type GetIndividualScalesTableData = {
   startTime?: InputMaybe<Scalars['Float']['input']>;
 };
 
+export type GetPackagesListInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+  page?: InputMaybe<Scalars['Int']['input']>;
+};
+
 export type GetReportDataInput = {
   currentPage: Scalars['Int']['input'];
   departmentId?: InputMaybe<Scalars['Int']['input']>;
@@ -812,6 +935,7 @@ export type GetUserInformationTableData = {
   currentPage: Scalars['Int']['input'];
   departmentId?: InputMaybe<Scalars['Int']['input']>;
   identificationCard?: InputMaybe<Scalars['String']['input']>;
+  isOffLine?: InputMaybe<Scalars['Boolean']['input']>;
   pageNumber: Scalars['Int']['input'];
   realname?: InputMaybe<Scalars['String']['input']>;
   role?: InputMaybe<Scalars['String']['input']>;
@@ -910,6 +1034,7 @@ export type HrvEvaluation = {
   effectiveStartTime?: Maybe<Scalars['DateTime']['output']>;
   id?: Maybe<Scalars['Int']['output']>;
   isEnable?: Maybe<Scalars['Boolean']['output']>;
+  number?: Maybe<Scalars['Int']['output']>;
   realnames?: Maybe<Array<Scalars['String']['output']>>;
   releaseTopic?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -919,6 +1044,7 @@ export type HrvEvaluation = {
 export type HrvEvaluationDetail = {
   __typename?: 'HrvEvaluationDetail';
   hrvEvaluationDetail: HrvEvaluation;
+  number?: Maybe<Scalars['Int']['output']>;
   userList?: Maybe<Array<Scalars['Int']['output']>>;
 };
 
@@ -995,14 +1121,23 @@ export type IndividualEvaluation = {
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   effectiveEndTime?: Maybe<Scalars['DateTime']['output']>;
   effectiveStartTime?: Maybe<Scalars['DateTime']['output']>;
+  finishUserCount: Scalars['Int']['output'];
   id?: Maybe<Scalars['Int']['output']>;
   isEnable?: Maybe<Scalars['Boolean']['output']>;
+  isShowReport?: Maybe<Scalars['Boolean']['output']>;
+  packageList?: Maybe<Array<Scalars['Int']['output']>>;
+  packageNames?: Maybe<Array<Scalars['String']['output']>>;
   realnames?: Maybe<Array<Scalars['String']['output']>>;
   releaseTopic?: Maybe<Scalars['String']['output']>;
   releaseType?: Maybe<Scalars['Int']['output']>;
   remark?: Maybe<Scalars['String']['output']>;
   scaleNames?: Maybe<Array<Scalars['String']['output']>>;
   scalesList?: Maybe<Array<Scalars['Int']['output']>>;
+  unFinishUserCount: Scalars['Int']['output'];
+  unFinishUserIdList?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  unFinishUserNameList: Array<Scalars['String']['output']>;
+  unFinishUserPhoneList?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  unFinishUserScaleList: Array<Array<Scale>>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   usersList?: Maybe<Array<Scalars['Int']['output']>>;
 };
@@ -1010,6 +1145,7 @@ export type IndividualEvaluation = {
 export type IndividualEvaluationDetail = {
   __typename?: 'IndividualEvaluationDetail';
   individualEvaluationDetail: IndividualEvaluation;
+  packageList?: Maybe<Array<Scalars['Int']['output']>>;
   scaleList?: Maybe<Array<Scalars['Int']['output']>>;
   userList?: Maybe<Array<Scalars['Int']['output']>>;
 };
@@ -1033,44 +1169,49 @@ export type Mutation = {
   CreateAccessory: CreatAccessoryResponse;
   CreateFatherDepartment: CreatfatherResponse;
   UpdateFatherDepartment: UpdatefatherResponse;
-  UpdateSubsidiaryDepartment: UpdateResponse;
   addBatchUser: CreateResponse;
   addConsulationRecord: ConsulationRecord;
   addDepartmentEvaluation: DepartmentEvaluation;
   addDiagnosis: Scalars['Boolean']['output'];
-  addFactor: ScaleFactor;
+  addFactor: CreateEditScaleFactorResponse;
   addHrvDiagnosis: Scalars['Boolean']['output'];
   addHrvSignature: Scalars['Boolean']['output'];
   addMindBodyDiagnosis: Scalars['Boolean']['output'];
+  addPackage: Package;
   addScaleDiagnostic: ScaleDiagnostic;
   addScaleWarning: ScaleWarning;
   addSignature: Scalars['Boolean']['output'];
   addUpbringingHistory: UpbringingHistory;
   changePassword: User;
   createAnswer: CreateScaleAnswerResponse;
+  createDepartmentById: CreatfatherResponse;
   createHrvEvaluation: CreateHrvEvaluationResponse;
   createHrvReport: EcgResponse;
   createIndividualEvaluation: CreateResponse;
   createMergeUserScale: MergeUserScale;
   createScaleQuestion: CreateScaleQuestionResponse;
-  createSubsidiaryDepartment: CreatResponse;
   deleteAccessory: Scalars['String']['output'];
   deleteAnswer: DeleteScaleQuestionResponse;
   deleteConsulationRecord: ConsulationRecord;
   deleteDepartmentById: CreateResponse;
   deleteDepartmentEvaluation: DepartmentEvaluation;
+  deleteDepartmentExportRecord: DepartmentResponseDto;
   deleteDiagnostic: ScaleDiagnostic;
+  deleteExportRecord: ResponseDto;
   deleteFactor: ScaleFactor;
   deleteHrvEvaluation: CreateHrvEvaluationResponse;
   deleteIndividualEvaluation: CreateResponse;
+  deletePackage: Package;
   deleteReport: CreateResponse;
   deleteReportInfo: CreateResponse;
+  deleteReportSettingByID: CreateResponse;
   deleteScaleQuestionById: DeleteScaleQuestionResponse;
   deleteSettings: HospitalSettings;
+  deleteUniqueScale: CommonSaveReturn;
   deleteUpbringingHistory: UpbringingHistory;
   deleteUser: User;
   deleteWarning: ScaleWarning;
-  deletesubDepartmentById: CreateResponse;
+  insertReportSetting: CreateResponse;
   login: Auth;
   refreshToken: Token;
   resetUserPass: User;
@@ -1080,18 +1221,21 @@ export type Mutation = {
   saveReportQuestionChoose: Scalars['Boolean']['output'];
   saveReportQuestionChooseUseQuestionidAndAnswerid: Scalars['Boolean']['output'];
   signup: Auth;
-  submitBaseInformation: Scale;
-  submitScaleTypeInformation: ScaleType;
+  submitBaseInformation: CreateEditScaleBaseResponse;
+  submitScaleTypeInformation: CreateEditScaleTypeResponse;
   submitSettingsInformation: HospitalSettings;
   submitUserInformation: User;
   submitUserInformationList: UserIdList;
   updateAccessory: CreatAccessoryResponse;
   updateAnswer: Answer;
   updateConsulationRecord: ConsulationRecord;
+  updateDepartmentById: UpdatefatherResponse;
   updateDepartmentEvaluation: DepartmentEvaluation;
   updateDiagnostic: ScaleDiagnostic;
   updateHrvTestAnalysis: Scalars['Boolean']['output'];
+  updateOffLine: Scalars['Boolean']['output'];
   updateOrCreateGrowthHistory: GrowthHistory;
+  updateReportSettingByID: CreateResponse;
   updateScaleQuestion: UpdateScaleQuestionResponse;
   updateSignatureById: User;
   updateTestAnalysis: Scalars['Boolean']['output'];
@@ -1114,12 +1258,6 @@ export type MutationCreateFatherDepartmentArgs = {
 
 export type MutationUpdateFatherDepartmentArgs = {
   data: DepartmentfUpdateInput;
-  id: Scalars['Int']['input'];
-};
-
-
-export type MutationUpdateSubsidiaryDepartmentArgs = {
-  data: SubsidiaryDepartmentUpdateInput;
   id: Scalars['Int']['input'];
 };
 
@@ -1166,6 +1304,11 @@ export type MutationAddMindBodyDiagnosisArgs = {
 };
 
 
+export type MutationAddPackageArgs = {
+  data: PackageAddInput;
+};
+
+
 export type MutationAddScaleDiagnosticArgs = {
   data: CreateDiagnosticInput;
 };
@@ -1196,6 +1339,12 @@ export type MutationCreateAnswerArgs = {
 };
 
 
+export type MutationCreateDepartmentByIdArgs = {
+  data: DepartmentfCreateInput;
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationCreateHrvEvaluationArgs = {
   data: CreateHrvEvaluationInput;
 };
@@ -1220,11 +1369,6 @@ export type MutationCreateMergeUserScaleArgs = {
 
 export type MutationCreateScaleQuestionArgs = {
   data: ScaleQuestionInput;
-};
-
-
-export type MutationCreateSubsidiaryDepartmentArgs = {
-  data: CreateSubsidiaryDepartmentInput;
 };
 
 
@@ -1253,7 +1397,17 @@ export type MutationDeleteDepartmentEvaluationArgs = {
 };
 
 
+export type MutationDeleteDepartmentExportRecordArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteDiagnosticArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
+export type MutationDeleteExportRecordArgs = {
   id: Scalars['Int']['input'];
 };
 
@@ -1273,6 +1427,11 @@ export type MutationDeleteIndividualEvaluationArgs = {
 };
 
 
+export type MutationDeletePackageArgs = {
+  data: Scalars['String']['input'];
+};
+
+
 export type MutationDeleteReportArgs = {
   uuid: Scalars['String']['input'];
 };
@@ -1283,6 +1442,11 @@ export type MutationDeleteReportInfoArgs = {
 };
 
 
+export type MutationDeleteReportSettingByIdArgs = {
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationDeleteScaleQuestionByIdArgs = {
   id: Scalars['Int']['input'];
 };
@@ -1290,6 +1454,11 @@ export type MutationDeleteScaleQuestionByIdArgs = {
 
 export type MutationDeleteSettingsArgs = {
   data: Scalars['String']['input'];
+};
+
+
+export type MutationDeleteUniqueScaleArgs = {
+  scaleId: Scalars['Int']['input'];
 };
 
 
@@ -1308,8 +1477,8 @@ export type MutationDeleteWarningArgs = {
 };
 
 
-export type MutationDeletesubDepartmentByIdArgs = {
-  id: Scalars['Int']['input'];
+export type MutationInsertReportSettingArgs = {
+  data: CreateReportSettingInput;
 };
 
 
@@ -1401,6 +1570,12 @@ export type MutationUpdateConsulationRecordArgs = {
 };
 
 
+export type MutationUpdateDepartmentByIdArgs = {
+  data: DepartmentfCreateInput;
+  id: Scalars['Int']['input'];
+};
+
+
 export type MutationUpdateDepartmentEvaluationArgs = {
   data: CreateDeInput;
   id: Scalars['Int']['input'];
@@ -1418,9 +1593,21 @@ export type MutationUpdateHrvTestAnalysisArgs = {
 };
 
 
+export type MutationUpdateOffLineArgs = {
+  offlineStatus: Scalars['Boolean']['input'];
+  userId: Scalars['Int']['input'];
+};
+
+
 export type MutationUpdateOrCreateGrowthHistoryArgs = {
   input: GrowthHistoryInput;
   userId: Scalars['Int']['input'];
+};
+
+
+export type MutationUpdateReportSettingByIdArgs = {
+  data: CreateReportSettingInput;
+  id: Scalars['Int']['input'];
 };
 
 
@@ -1458,6 +1645,41 @@ export type MutationUpdateWarningArgs = {
   id: Scalars['Int']['input'];
 };
 
+export type Package = {
+  __typename?: 'Package';
+  count?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  hrvTest: Scalars['Boolean']['output'];
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  remark?: Maybe<Scalars['String']['output']>;
+  scaleList?: Maybe<Array<Scalars['Int']['output']>>;
+  scales?: Maybe<Array<ScaleInPackageList>>;
+  updatedAt: Scalars['DateTime']['output'];
+  uuid: Scalars['String']['output'];
+};
+
+export type PackageAddInput = {
+  count?: InputMaybe<Scalars['Int']['input']>;
+  hrvTest: Scalars['Boolean']['input'];
+  name: Scalars['String']['input'];
+  remark?: InputMaybe<Scalars['String']['input']>;
+  scaleList: Array<Scalars['Int']['input']>;
+  uuid?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PackageInfo = {
+  __typename?: 'PackageInfo';
+  count?: Maybe<Scalars['Int']['output']>;
+  createdAt: Scalars['DateTime']['output'];
+  hrvTest?: Maybe<Scalars['Boolean']['output']>;
+  id: Scalars['Int']['output'];
+  name: Scalars['String']['output'];
+  remark?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+  uuid: Scalars['String']['output'];
+};
+
 export type PagResponse = {
   __typename?: 'PagResponse';
   accessories?: Maybe<Array<Accessory>>;
@@ -1487,24 +1709,29 @@ export type QrCodeType = {
 export type Query = {
   __typename?: 'Query';
   answerGetAllSclaeQuestion: GetAllScaleQuestionReturnType;
+  assessment?: Maybe<DepartmentEvaluationEntity>;
   consulationRecords: GetAllConsulationRecord;
   createAccount: Scalars['String']['output'];
   departmentEvaluations: GetAllDepartmentEvaluation;
-  departments: Array<Department>;
+  departments: Array<DepartmentAll>;
+  exportDepartmentTotalCount: Scalars['Int']['output'];
+  exportTotalCount: Scalars['Int']['output'];
   findAccessory: FindAccessory;
   findAccessoryById: Accessory;
   findAccessoryPagination: PagResponse;
   findComprehensiveReport: ComprehensiveReportResult;
-  findDepartments: Array<Department>;
+  findDepartmentAll: Array<Department>;
+  findDepartments: Array<DepartmentAll>;
   findDepartmentsByName: Array<Department>;
-  findSubDepartments: Array<Subdepartment>;
-  findSubOfDepartments?: Maybe<DepartmentWithSub>;
+  findDepartmentsPagination: Array<DepartmentAll>;
+  findDepartmentsUser: Array<User>;
   generateQrCode: QrCodeType;
   getAllChDetectionResult: Array<ChDetectionResult>;
   getAllConsulationRecords: GetAllConsulationRecord;
   getAllEcgHrvReport: Array<ChDetectionResult>;
   getAllHrvReport: HrvReportNewOutputData;
   getAllHrvReportOnOnePage: Array<HrvReportOutput>;
+  getAllPackageListForDropDownList: Array<Package>;
   getAllScaleTypeAndName: ScaleTypeReturnType;
   getAllSclaeQuestion: GetAllScaleQuestionReturnType;
   getAnswer: AnswerResult;
@@ -1513,8 +1740,15 @@ export type Query = {
   getCommonBaseInformationTableData: Array<Scale>;
   getCommonTotalCount: Scalars['Int']['output'];
   getCurrentSignatureById: SignatureFlag;
+  getDepartmentDepartmentList: Array<DepartmentDepartmentTree>;
+  getDepartmentEducationList: Array<Education>;
+  getDepartmentExportRecordList: Array<DepartmentExportRecordItemDto>;
+  getDepartmentList: Array<DepartmentTree>;
+  getDepartmentReleaseTopicList: Array<DepartmentTopicListItem>;
+  getEducationList: Array<Education>;
   getEducations: Array<Education>;
   getEthnicities: Array<Ethnicity>;
+  getExportRecordList: Array<ExportRecordItemDto>;
   getFactor: AllFactorInfo;
   getFactorInformationToWeightlessnessReduction: GetFatcorInformationToWeightlessnessReduction;
   getFactorList: Array<ScaleFactor>;
@@ -1526,10 +1760,15 @@ export type Query = {
   getHrvReportByUUID: HrvReportDetail;
   getIndividualEvaluationDetail: IndividualEvaluationDetail;
   getIndividualScalesTableData: GetAllIndividualEvaluation;
+  getOnePackage: AllPackageInfo;
+  getPackageCount: Scalars['Int']['output'];
+  getPackageList: Array<Package>;
   getQuestionByScaleName: Array<ScaleQuestion>;
   getQuestionInformationToWeightlessnessReduction: GetQuestionInformationToWeightlessnessReduction;
   getRegisterCardReading: Settings;
+  getReleaseTopicList: Array<TopicListItem>;
   getReportInfo: ReportInfo;
+  getReportSettingsTableData: GetAllReportSettings;
   getScaleByType: ScaleReturnType;
   getScaleDetail: Scale;
   getScaleIdByName: QueryScaleIdByNameReturnType;
@@ -1561,9 +1800,6 @@ export type Query = {
   scaleTypes: Array<ScaleType>;
   scaleWarnings: GetAllScaleWarning;
   scales: Array<Scale>;
-  subdepartment: SubsidiaryDepartment;
-  subdepartments: Array<Subdepartment>;
-  subsidiaryDepartments: Array<SubsidiaryDepartment>;
   totalCount: Scalars['Int']['output'];
   upbringingHistorys: GetAllUpbringingHistory;
   users: Array<User>;
@@ -1573,6 +1809,11 @@ export type Query = {
 
 export type QueryAnswerGetAllSclaeQuestionArgs = {
   data?: InputMaybe<QuestionQueryInput>;
+};
+
+
+export type QueryAssessmentArgs = {
+  uuid: Scalars['String']['input'];
 };
 
 
@@ -1617,8 +1858,14 @@ export type QueryFindDepartmentsByNameArgs = {
 };
 
 
-export type QueryFindSubOfDepartmentsArgs = {
-  data: Scalars['Int']['input'];
+export type QueryFindDepartmentsPaginationArgs = {
+  page: Scalars['Int']['input'];
+  pagesize: Scalars['Int']['input'];
+};
+
+
+export type QueryFindDepartmentsUserArgs = {
+  data: GetUserInformationTableData;
 };
 
 
@@ -1684,6 +1931,18 @@ export type QueryGetCurrentSignatureByIdArgs = {
 };
 
 
+export type QueryGetDepartmentExportRecordListArgs = {
+  currentPage: Scalars['Int']['input'];
+  pageNumber: Scalars['Int']['input'];
+};
+
+
+export type QueryGetExportRecordListArgs = {
+  currentPage: Scalars['Int']['input'];
+  pageNumber: Scalars['Int']['input'];
+};
+
+
 export type QueryGetFactorArgs = {
   data: Scalars['String']['input'];
 };
@@ -1716,6 +1975,7 @@ export type QueryGetHrvEvaluationDetailArgs = {
 
 export type QueryGetHrvIndividualTableDataArgs = {
   data: GetHrvIndividualTableData;
+  isOffLine?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -1726,11 +1986,28 @@ export type QueryGetHrvReportByUuidArgs = {
 
 export type QueryGetIndividualEvaluationDetailArgs = {
   id: Scalars['Int']['input'];
+  operateType?: InputMaybe<Scalars['String']['input']>;
 };
 
 
 export type QueryGetIndividualScalesTableDataArgs = {
   data: GetIndividualScalesTableData;
+  isOffLine?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+
+export type QueryGetOnePackageArgs = {
+  data: Scalars['String']['input'];
+};
+
+
+export type QueryGetPackageCountArgs = {
+  data: GetPackagesListInput;
+};
+
+
+export type QueryGetPackageListArgs = {
+  data: GetPackagesListInput;
 };
 
 
@@ -1741,6 +2018,11 @@ export type QueryGetQuestionByScaleNameArgs = {
 
 export type QueryGetReportInfoArgs = {
   data: Scalars['String']['input'];
+};
+
+
+export type QueryGetReportSettingsTableDataArgs = {
+  data: PaginationInput;
 };
 
 
@@ -1811,6 +2093,7 @@ export type QueryGetUserByIdArgs = {
 
 export type QueryGetUserCountArgs = {
   data: GetUserInformationTableData;
+  isOffLine?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -1821,6 +2104,7 @@ export type QueryGetUserDetailArgs = {
 
 export type QueryGetUserInformationTableDataArgs = {
   data: GetUserInformationTableData;
+  isOffLine?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -1855,11 +2139,6 @@ export type QueryScaleTotalCountArgs = {
 export type QueryScaleWarningsArgs = {
   data: FindWarningInput;
   pagination: PaginationInput;
-};
-
-
-export type QuerySubdepartmentArgs = {
-  id: Scalars['Int']['input'];
 };
 
 
@@ -1958,6 +2237,27 @@ export type ReportQuestionChooseUseQuestionidAndAnsweridInput = {
   uuid: Scalars['String']['input'];
 };
 
+export type ReportSettings = {
+  __typename?: 'ReportSettings';
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['Int']['output'];
+  imgURL?: Maybe<Scalars['String']['output']>;
+  isBed: Scalars['Boolean']['output'];
+  isCountTime: Scalars['Boolean']['output'];
+  isDepartment: Scalars['Boolean']['output'];
+  isEnable: Scalars['Boolean']['output'];
+  isInstitution: Scalars['Boolean']['output'];
+  isLogo: Scalars['Boolean']['output'];
+  remark?: Maybe<Scalars['String']['output']>;
+  updatedAt: Scalars['DateTime']['output'];
+};
+
+export type ResponseDto = {
+  __typename?: 'ResponseDto';
+  message: Scalars['String']['output'];
+  success: Scalars['Boolean']['output'];
+};
+
 /** User role */
 export enum Role {
   Admin = 'ADMIN',
@@ -2049,6 +2349,19 @@ export type ScaleFactor = {
   /** Identifies the date and time when the object was last updated. */
   updatedAt: Scalars['DateTime']['output'];
   uuid: Scalars['String']['output'];
+};
+
+export type ScaleInPackageList = {
+  __typename?: 'ScaleInPackageList';
+  isEnable: Scalars['Boolean']['output'];
+  name: Scalars['String']['output'];
+  scaleId: Scalars['Int']['output'];
+};
+
+export type ScaleList = {
+  __typename?: 'ScaleList';
+  packageId: Scalars['Int']['output'];
+  scaleId: Scalars['Int']['output'];
 };
 
 export type ScaleQuestion = {
@@ -2161,6 +2474,7 @@ export type ScaleTestSearchList = {
   createdAt: Scalars['DateTime']['output'];
   id: Scalars['ID']['output'];
   rawScore: Scalars['Int']['output'];
+  reportTopic?: Maybe<Scalars['String']['output']>;
   report_result_id: Scalars['Int']['output'];
   scale: Scale;
   scaleId: Scalars['Int']['output'];
@@ -2253,28 +2567,13 @@ export type SignupInput = {
   birthDate?: InputMaybe<Scalars['DateTime']['input']>;
   departmentId?: InputMaybe<Scalars['Int']['input']>;
   gender?: InputMaybe<Scalars['Int']['input']>;
-  identificationCard?: InputMaybe<Scalars['String']['input']>;
-  marital: Scalars['Int']['input'];
+  identificationCard: Scalars['String']['input'];
+  marital?: InputMaybe<Scalars['Int']['input']>;
   password: Scalars['String']['input'];
-  realname?: InputMaybe<Scalars['String']['input']>;
+  realname: Scalars['String']['input'];
   subDepartmentId?: InputMaybe<Scalars['Int']['input']>;
   unit?: InputMaybe<Scalars['String']['input']>;
   username: Scalars['String']['input'];
-};
-
-export type Subdepartment = {
-  __typename?: 'Subdepartment';
-  createdAt: Scalars['DateTime']['output'];
-  department: Department;
-  departmentId?: Maybe<Scalars['Int']['output']>;
-  departmentName?: Maybe<Scalars['String']['output']>;
-  id: Scalars['ID']['output'];
-  institutionCode: Scalars['String']['output'];
-  isEnable?: Maybe<Scalars['Boolean']['output']>;
-  name: Scalars['String']['output'];
-  remark?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-  uuid: Scalars['String']['output'];
 };
 
 export type SubmitBaseInformation = {
@@ -2365,29 +2664,6 @@ export type SubmitUserInformationList = {
   userList: Array<SubmitUserInfo>;
 };
 
-export type SubsidiaryDepartment = {
-  __typename?: 'SubsidiaryDepartment';
-  createdAt: Scalars['DateTime']['output'];
-  departmentId?: Maybe<Scalars['Int']['output']>;
-  id: Scalars['ID']['output'];
-  institutionCode: Scalars['String']['output'];
-  isEnable: Scalars['Boolean']['output'];
-  name: Scalars['String']['output'];
-  remark?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-  user?: Maybe<Array<User>>;
-  uuid: Scalars['String']['output'];
-};
-
-export type SubsidiaryDepartmentUpdateInput = {
-  departmentId?: InputMaybe<Scalars['Int']['input']>;
-  institutionCode: Scalars['String']['input'];
-  isEnable: Scalars['Boolean']['input'];
-  name: Scalars['String']['input'];
-  remark?: InputMaybe<Scalars['String']['input']>;
-  uuid?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type Token = {
   __typename?: 'Token';
   /** JWT access token */
@@ -2397,6 +2673,13 @@ export type Token = {
   refreshToken: Scalars['JWT']['output'];
   /** User role */
   role?: Maybe<Scalars['String']['output']>;
+};
+
+export type TopicListItem = {
+  __typename?: 'TopicListItem';
+  topicName: Scalars['String']['output'];
+  topicType: Scalars['String']['output'];
+  uuid: Scalars['String']['output'];
 };
 
 export type UpbringPaginationInput = {
@@ -2453,14 +2736,6 @@ export type UpdateDiagnosticInput = {
   remark?: InputMaybe<Scalars['String']['input']>;
   scaleId: Scalars['Int']['input'];
   severity?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type UpdateResponse = {
-  __typename?: 'UpdateResponse';
-  id?: Maybe<Scalars['Int']['output']>;
-  message?: Maybe<Scalars['String']['output']>;
-  new?: Maybe<TSubsidiaryDepartment>;
-  success?: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type UpdateScaleQuestionResponse = {
@@ -2601,19 +2876,6 @@ export type GetScaleTypeTableData = {
   scaleTypeName?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type TSubsidiaryDepartment = {
-  __typename?: 'tSubsidiaryDepartment';
-  createdAt: Scalars['DateTime']['output'];
-  departmentId?: Maybe<Scalars['Int']['output']>;
-  id: Scalars['ID']['output'];
-  institutionCode: Scalars['String']['output'];
-  isEnable?: Maybe<Scalars['Boolean']['output']>;
-  name: Scalars['String']['output'];
-  remark?: Maybe<Scalars['String']['output']>;
-  updatedAt: Scalars['DateTime']['output'];
-  uuid: Scalars['String']['output'];
-};
-
 export type UserHrvReports = {
   __typename?: 'userHrvReports';
   reports?: Maybe<Array<HrvReportOutput>>;
@@ -2625,7 +2887,7 @@ export type GetEvaluationsQueryVariables = Exact<{
 }>;
 
 
-export type GetEvaluationsQuery = { __typename?: 'Query', scaleEvaluations: { __typename?: 'GetAllScaleEvaluation', data: Array<{ __typename?: 'ScaleEvaluation', scaleName?: string | null, uuid?: string | null, individualEvaluationId?: number | null, departmentEvaluationId?: number | null, createdAt: any, isTest?: boolean | null, releaseType?: number | null, effectiveStartTime?: any | null, effectiveEndTime?: any | null, isEnable?: boolean | null, skipRule?: string | null, isSkip?: boolean | null, type?: string | null, test_uuid?: string | null }> } };
+export type GetEvaluationsQuery = { __typename?: 'Query', scaleEvaluations: { __typename?: 'GetAllScaleEvaluation', data: Array<{ __typename?: 'ScaleEvaluation', scaleName?: string | null, uuid?: string | null, individualEvaluationId?: number | null, departmentEvaluationId?: number | null, createdAt: any, isTest?: boolean | null, releaseType?: number | null, effectiveStartTime?: any | null, effectiveEndTime?: any | null, isEnable?: boolean | null, skipRule?: string | null, isSkip?: boolean | null, type?: string | null, test_uuid?: string | null, releaseTopic?: string | null }> } };
 
 export type GetScaleQuestionsQueryVariables = Exact<{
   scaleId: Scalars['String']['input'];
@@ -2667,7 +2929,7 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Auth', accessToken: any, role?: string | null, user: { __typename?: 'User', id: string, isAdmin?: boolean | null, username: string, realname: string } } };
 
 
-export const GetEvaluationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getEvaluations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scaleEvaluations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"scaleName"},"value":{"kind":"StringValue","value":"","block":false}}]}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"page"},"value":{"kind":"IntValue","value":"1"}},{"kind":"ObjectField","name":{"kind":"Name","value":"pageSize"},"value":{"kind":"IntValue","value":"1000"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scaleName"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}},{"kind":"Field","name":{"kind":"Name","value":"individualEvaluationId"}},{"kind":"Field","name":{"kind":"Name","value":"departmentEvaluationId"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"isTest"}},{"kind":"Field","name":{"kind":"Name","value":"releaseType"}},{"kind":"Field","name":{"kind":"Name","value":"effectiveStartTime"}},{"kind":"Field","name":{"kind":"Name","value":"effectiveEndTime"}},{"kind":"Field","name":{"kind":"Name","value":"isEnable"}},{"kind":"Field","name":{"kind":"Name","value":"skipRule"}},{"kind":"Field","name":{"kind":"Name","value":"isSkip"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"test_uuid"}}]}}]}}]}}]} as unknown as DocumentNode<GetEvaluationsQuery, GetEvaluationsQueryVariables>;
+export const GetEvaluationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getEvaluations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scaleEvaluations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"scaleName"},"value":{"kind":"StringValue","value":"","block":false}}]}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"page"},"value":{"kind":"IntValue","value":"1"}},{"kind":"ObjectField","name":{"kind":"Name","value":"pageSize"},"value":{"kind":"IntValue","value":"1000"}}]}},{"kind":"Argument","name":{"kind":"Name","value":"userId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"data"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"scaleName"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}},{"kind":"Field","name":{"kind":"Name","value":"individualEvaluationId"}},{"kind":"Field","name":{"kind":"Name","value":"departmentEvaluationId"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"isTest"}},{"kind":"Field","name":{"kind":"Name","value":"releaseType"}},{"kind":"Field","name":{"kind":"Name","value":"effectiveStartTime"}},{"kind":"Field","name":{"kind":"Name","value":"effectiveEndTime"}},{"kind":"Field","name":{"kind":"Name","value":"isEnable"}},{"kind":"Field","name":{"kind":"Name","value":"skipRule"}},{"kind":"Field","name":{"kind":"Name","value":"isSkip"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"test_uuid"}},{"kind":"Field","name":{"kind":"Name","value":"releaseTopic"}}]}}]}}]}}]} as unknown as DocumentNode<GetEvaluationsQuery, GetEvaluationsQueryVariables>;
 export const GetScaleQuestionsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getScaleQuestions"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"scaleId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getScaleQuestionByScaleUUIDWithTitleAndInstructions"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"uuid"},"value":{"kind":"Variable","name":{"kind":"Name","value":"scaleId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ScaleQuestionRender"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"answer"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"answerGroupCode"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"uuid"}},{"kind":"Field","name":{"kind":"Name","value":"picture"}}]}},{"kind":"Field","name":{"kind":"Name","value":"answerGroupCode"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"questionImg"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"title"}}]}}]}}]} as unknown as DocumentNode<GetScaleQuestionsQuery, GetScaleQuestionsQueryVariables>;
 export const SaveReportDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"saveReport"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"report"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ReportQuestionChooseUseQuestionidAndAnsweridInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"saveReportQuestionChooseUseQuestionidAndAnswerid"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"reportQuestionChooseUseQuestionidAndAnsweridInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"report"}}}]}]}}]} as unknown as DocumentNode<SaveReportMutation, SaveReportMutationVariables>;
 export const SaveHrvReportDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"saveHrvReport"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"report"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"EcgHrvReportInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"saveEcgHrvReport"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"ecgHrvReportInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"report"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"success"}},{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<SaveHrvReportMutation, SaveHrvReportMutationVariables>;

@@ -29,6 +29,7 @@ const GET_LIST = gql(/* GraphQL */ `
         isSkip
         type
         test_uuid
+        releaseTopic
       }
     }
   }

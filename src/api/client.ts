@@ -13,7 +13,7 @@ import localforage from "localforage";
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (
     (graphQLErrors as any)?.[0]?.extensions?.originalError?.statusCode ===
-      401 &&
+    401 &&
     location.href !== "/settings"
   ) {
     location.href = "/login";
@@ -21,8 +21,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const httpLink = new HttpLink({
-  // uri: `${localStorage.getItem('endpoint') ?? ''}/graphql`,
-  uri: `http://42.192.45.48:7001/graphql`,
+  uri: `${localStorage.getItem('endpoint') ?? ''}/graphql`,
 });
 
 const authLink = new ApolloLink((operation, forward) => {
