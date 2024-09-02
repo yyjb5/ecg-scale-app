@@ -78,7 +78,8 @@
     "compile": "graphql-codegen",
     "watch": "graphql-codegen -w",
     "dev": "ionic capacitor run android -l --external",
-    "ionic:build": "react-scripts build && ionic cap copy && ionic cap sync"
+    "ionic:build": "react-scripts build && ionic cap copy && ionic cap sync",
+    "ionic:android": "ionic cap open android"
   },
   "browserslist": [
     "Chrome >=79",
