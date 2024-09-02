@@ -409,6 +409,19 @@ function EvaluationDetail() {
         extra.departmentEvaluationId !== null
       ) {
         // 团队逻辑
+        await db.finishedRecords
+          .where('testId')
+          .equals(extra.test_uuid!)
+          .modify({ finished: true });
+        const getCount = await db.finishedRecords
+          .where('type')
+          .equals('department')
+          .and((item) => item.finished === false)
+          .count();
+        // alert(getCount);
+        if (getCount === 0) {
+          await stop(true);
+        }
       }
       history.back();
       // id &&saveReport({
@@ -696,43 +709,46 @@ function EvaluationDetail() {
           {skipedQuestions.map((question, idx, arr) => (
             <div className='clide-container' key={`question-${idx}`}>
               <div className='slide'>
-                <div className='question-type'>
-                  {QuestionTypeTitle[question.type as QuestionType]}
-                </div>
-                <div className='detail-title'>
-                  {question.idx + 1}.{question.name}
-                </div>
-                {question.questionImg && (
-                  <img
-                    style={{ borderRadius: 30, marginBottom: 24 }}
-                    src={question.questionImg}
-                  />
-                )}
-                {question.type === QuestionType.Single &&
-                  renderSingleSelect(question, idx, arr)}
-                {question.type === QuestionType.Multiple &&
-                  renderMultiSelect(question)}
-                {question.type === QuestionType.Image &&
-                  renderImageSelect(question)}
-                {question.type === QuestionType.Blank && renderBlank(question)}
-                <div className='question-spacer'></div>
-                <div className='question-button'>
-                  <div
-                    className='button'
-                    onClick={goPrev}
-                    style={{
-                      background: currentIndex === 0 ? 'grey' : '#2850f7',
-                    }}
-                  >
-                    上一题
+                <div className='slide-child'>
+                  <div className='question-type'>
+                    {QuestionTypeTitle[question.type as QuestionType]}
                   </div>
-                  <div
-                    className='button'
-                    onClick={() => {
-                      goNext(question, idx, arr);
-                    }}
-                  >
-                    {idx === arr.length - 1 ? '提交问卷' : '下一题'}
+                  <div className='detail-title'>
+                    {question.idx + 1}.{question.name}
+                  </div>
+                  {question.questionImg && (
+                    <img
+                      style={{ borderRadius: 30, marginBottom: 24 }}
+                      src={question.questionImg}
+                    />
+                  )}
+                  {question.type === QuestionType.Single &&
+                    renderSingleSelect(question, idx, arr)}
+                  {question.type === QuestionType.Multiple &&
+                    renderMultiSelect(question)}
+                  {question.type === QuestionType.Image &&
+                    renderImageSelect(question)}
+                  {question.type === QuestionType.Blank &&
+                    renderBlank(question)}
+                  <div className='question-spacer'></div>
+                  <div className='question-button'>
+                    <div
+                      className='button'
+                      onClick={goPrev}
+                      style={{
+                        background: currentIndex === 0 ? 'grey' : '#2850f7',
+                      }}
+                    >
+                      上一题
+                    </div>
+                    <div
+                      className='button'
+                      onClick={() => {
+                        goNext(question, idx, arr);
+                      }}
+                    >
+                      {idx === arr.length - 1 ? '提交问卷' : '下一题'}
+                    </div>
                   </div>
                 </div>
               </div>

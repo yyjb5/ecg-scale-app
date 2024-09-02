@@ -45,6 +45,7 @@
   display: flex;
   font-size: 20px;
   font-weight: bold;
+  padding: 5px;
   padding-left: 20px;
   border-radius: 20px;
   align-items: center;
